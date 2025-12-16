@@ -1,0 +1,42 @@
+{
+  "totalOrders": 1000,
+  "completedOrders": 995,
+  "averageLeadTime": 4050,
+  "delayedOrderRate": 0.92,
+  "bottleneckTop3": [
+    {
+      "segment": "S3",
+      "ratio": 0.38
+    },
+    {
+      "segment": "S6",
+      "ratio": 0.34
+    },
+    {
+      "segment": "S5",
+      "ratio": 0.15
+    }
+  ],
+  "byGroup": {
+    "Seoul-Songpa": {
+      "completedOrders": 192,
+      "averageLeadTime": 3988
+    },
+    "Seoul-Gangnam": {
+      "completedOrders": 192,
+      "averageLeadTime": 4071
+    },
+    "Seoul-Mapo": {
+      "completedOrders": 209,
+      "averageLeadTime": 3952
+    },
+    "Seoul-Yeongdeungpo": {
+      "completedOrders": 204,
+      "averageLeadTime": 4097
+    },
+    "Seoul-Seodaemun": {
+      "completedOrders": 198,
+      "averageLeadTime": 4144
+    }
+  }
+}
