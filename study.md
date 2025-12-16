@@ -37,6 +37,47 @@
 
 배달 서비스에서는 아주 흔하게 쓰임
 
+## Projcet buildTimeline.js 내 Dimension
+
+Dimension = "집계할 때 기준이 되는 축 (axis)"
+
+-   시간 (time)은 KPI의 값
+-   지역/가게 같은 건 KPI를 어떻게 나눠서 볼지의 기준
+
+```js
+// buildTimeline.js
+
+const dimensions = {
+	/** 지역 단위 집계 기준
+	 *  예: Seoul-Gangnam
+	 *  가장 자주 쓰이는 KPI 축
+	 *  "어디가 느린가?"를 보기 위한 1순위 dimension
+	 **/
+	region,
+
+	/** 가게 단위 집계 기준
+	 *  조리 지연 분석
+	 *  문제 가게 Top N 추출
+	 *  KPI에서 빠지면 안 되는 핵심 dimension
+	 **/
+	store_id,
+
+	/** 라이더 단위 분석 (선택)
+	 *  배차/픽업 지연 분석에 사용
+	 *  모든 주문에 없을 수 있음 -> null 허용
+	 *  MVP에서는 있어도 되고 없어도 됨
+	 **/
+	rider_id,
+
+	/** 플랫폼 구분
+	 *  현재는 거의 항상 baemin
+	 *  나중에 coupang-eats 추가하여 바로 비교 가능
+	 *  MVP에서는 고정값이어도 괜찮음
+	 **/
+	platform,
+};
+```
+
 # ESM vs CommonJS (CJS)
 
 JavsScript 모듈 시스템
