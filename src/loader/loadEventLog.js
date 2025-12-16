@@ -1,5 +1,17 @@
 import fs from "fs/promises";
 
+/**
+ * 지금 구현된 것
+ * - JSONL 파일 읽기
+ * - 한 줄씩 파싱 -> 객체 배열
+ * - 비동기 처리
+ *
+ * 나중에 할 수 있는 개선
+ * - CSV 파서 추가
+ * - 대용량 파일 스트리밍 처리
+ * - 파일 유효성검사
+ */
+
 export async function loadEventLog(filePath, { format = "jsonl" } = {}) {
 	const text = await fs.readFile(filePath, "utf-8");
 
@@ -12,6 +24,6 @@ export async function loadEventLog(filePath, { format = "jsonl" } = {}) {
 	return text
 		.split("\n")
 		.map((line) => line.trim())
-		.filter(Boolean)
+		.filter(Boolean) // Boolean(value)가 false가 되는 값들을 전부 제거
 		.map((line) => JSON.parse(line));
 }
