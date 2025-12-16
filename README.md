@@ -92,10 +92,11 @@ docs/
 3. 데이터 스키마 확정 (Data Schema)
 4. 이벤트 로그 샘플 데이터 생성 (Event Log Generation)
 5. 데이터 처리 파이프라인 구현 (Pipeline)
-6. KPI 결과 시각
+6. KPI 결과 시각화 및 리포트 구성
 
 ## 🛠 기술 스택
 
 -   Language: JavaScript (ES6+)
 -   Runtime: Node.js
--   Dat
+-   Data Format: JSONL, CSV
+-   Visualization: Web 기반 대시보드 (확장 예정)
