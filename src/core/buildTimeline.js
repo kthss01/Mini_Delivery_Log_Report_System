@@ -115,7 +115,7 @@ export function buildTimeline(events) {
 		}
 
 		// 4) event_time 기준 정렬
-		deduped.sort((a, b) => a.event_time - b.event_time);
+		dedupedById.sort((a, b) => a.event_time - b.event_time);
 
 		// 5) event_type 중복 감지 + type별 이벤트 모으기
 		const byType = new Map(); // type -> events[]
@@ -150,7 +150,7 @@ export function buildTimeline(events) {
 		const isCompleted = missingForCompleted.length === 0;
 
 		// 8) dimensions 추출
-		const dimensions = RMRJ(dedupedById);
+		const dimensions = pickDimensions(dedupedById);
 
 		timelines.push({
 			orderId,
