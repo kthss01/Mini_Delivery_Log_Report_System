@@ -14,6 +14,11 @@ function secondsBetween(a, b) {
 	return Math.floor(ms / 1000);
 }
 
+function hourBucket(date) {
+	if (!date) return null;
+	return date.getHours(); // Date 객체는 local time 기준(우린 +09로 파싱했으니 OK)
+}
+
 export function calculateLeadTime(timelines) {
 	return timelines.map((t) => {
 		const idx = t.eventIndex ?? {};
@@ -33,15 +38,28 @@ export function calculateLeadTime(timelines) {
 		// ✅ A안: dimension을 metrics에 복사해서 aggregateKPI가 그대로 쓰게 함
 		const region = t.dimensions?.region ?? null;
 		const store_id = t.dimensions?.store_id ?? null;
+		const hour_bucket = hourBucket(created);
+
+		// 품질 플래그(집계용 최소만 전달)
+		const hasMissing = (t.anomalies?.missing?.length ?? 0) > 0;
+		const hasDuplicateTypes =
+			(t.anomalies?.duplicateTypes?.length ?? 0) > 0;
+		const hasOutOfOrder = Boolean(t.anomalies?.outOfOrder);
 
 		return {
 			orderId: t.orderId,
 			region,
 			store_id,
+			hour_bucket,
+
 			segments,
 			totalLeadTime,
-			// (선택) 완료 여부도 같이 내려주면 집계에서 편함
 			isCompleted: t.status?.isCompleted ?? totalLeadTime !== null,
+
+			// data quality flags
+			hasMissing,
+			hasDuplicateTypes,
+			hasOutOfOrder,
 		};
 	});
 }

@@ -3,19 +3,27 @@ function avg(nums) {
 	return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length);
 }
 
+function ratio(part, total) {
+	if (!total) return 0;
+	return Number((part / total).toFixed(2));
+}
+
 export function aggregateKPI(
 	orderMetrics,
-	{ slaSeconds = 2700, groupKey = "region" } = {}
+	{ slaSeconds = 2700, groupKey = "region", topN = 3 } = {}
 ) {
+	const totalOrders = orderMetrics.length;
 	const completed = orderMetrics.filter(
 		(m) => typeof m.totalLeadTime === "number"
 	);
+	const completedOrders = completed.length;
 
+	// 지연율
 	const delayedCount = completed.filter(
 		(m) => m.totalLeadTime > slaSeconds
 	).length;
 
-	// 병목(가장 큰 segment)
+	// 병목(가장 큰 segment) TopN
 	const bottleneckCounts = new Map();
 	for (const m of completed) {
 		let maxSeg = null;
@@ -33,40 +41,63 @@ export function aggregateKPI(
 			);
 	}
 
-	const bottleneckTop3 = [...bottleneckCounts.entries()]
+	const bottleneckTop = [...bottleneckCounts.entries()]
 		.sort((a, b) => b[1] - a[1])
-		.slice(0, 3)
+		.slice(0, topN)
 		.map(([segment, count]) => ({
 			segment,
-			ratio: completed.length
-				? Number((count / completed.length).toFixed(2))
-				: 0,
+			ratio: ratio(count, completedOrders),
 		}));
 
-	// 그룹별(간단 버전)
+	// ✅ 데이터 품질 KPI
+	const missingCount = orderMetrics.filter((m) => m.hasMissing).length;
+	const duplicateTypesCount = orderMetrics.filter(
+		(m) => m.hasDuplicateTypes
+	).length;
+	const outOfOrderCount = orderMetrics.filter((m) => m.hasOutOfOrder).length;
+
+	const dataQuality = {
+		totalOrders,
+		completedOrders,
+		completionRate: ratio(completedOrders, totalOrders),
+		missingRate: ratio(missingCount, totalOrders),
+		duplicateTypesRate: ratio(duplicateTypesCount, totalOrders),
+		outOfOrderRate: ratio(outOfOrderCount, totalOrders),
+	};
+
+	// ✅ 그룹별 KPI (region / store_id / hour_bucket 등)
 	const groups = new Map();
 	for (const m of completed) {
-		const key = m[groupKey] ?? "UNKNOWN";
+		const keyRaw = m[groupKey];
+		const key =
+			keyRaw === null || keyRaw === undefined
+				? "UNKNOWN"
+				: String(keyRaw);
 		if (!groups.has(key)) groups.set(key, []);
-		groups.get(key).push(m.totalLeadTime);
+		groups.get(key).push(m);
 	}
 
 	const byGroup = {};
 	for (const [k, arr] of groups.entries()) {
+		const leadTimes = arr
+			.map((x) => x.totalLeadTime)
+			.filter((v) => typeof v === "number");
+		const delayed = arr.filter((x) => x.totalLeadTime > slaSeconds).length;
+
 		byGroup[k] = {
 			completedOrders: arr.length,
-			averageLeadTime: avg(arr),
+			averageLeadTime: avg(leadTimes),
+			delayedOrderRate: ratio(delayed, arr.length),
 		};
 	}
 
 	return {
-		totalOrders: orderMetrics.length,
-		completedOrders: completed.length,
+		totalOrders,
+		completedOrders,
 		averageLeadTime: avg(completed.map((m) => m.totalLeadTime)),
-		delayedOrderRate: completed.length
-			? Number((delayedCount / completed.length).toFixed(2))
-			: 0,
-		bottleneckTop3,
+		delayedOrderRate: ratio(delayedCount, completedOrders),
+		bottleneckTop,
 		byGroup,
+		dataQuality,
 	};
 }

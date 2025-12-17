@@ -18,7 +18,8 @@ async function main() {
 	const slaSeconds = 45 * 60;
 
 	// KPI 그룹 기준 예시: region, store, hour 등
-	const groupKey = "region"; // 나중에 "store_id" / "hour_bucket" 등으로 변경 가능
+	const groupKey = "hour_bucket"; // 나중에 "store_id" / "hour_bucket" 등으로 변경 가능
+	// const groupKey = "region"; // 나중에 "store_id" / "hour_bucket" 등으로 변경 가능
 
 	// 2) Load
 	const rawEvents = await loadEventLog(inputPath, { format });

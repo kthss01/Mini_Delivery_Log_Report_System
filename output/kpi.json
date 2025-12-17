@@ -3,7 +3,7 @@
   "completedOrders": 995,
   "averageLeadTime": 4050,
   "delayedOrderRate": 0.92,
-  "bottleneckTop3": [
+  "bottleneckTop": [
     {
       "segment": "S3",
       "ratio": 0.38
@@ -18,25 +18,78 @@
     }
   ],
   "byGroup": {
-    "Seoul-Songpa": {
-      "completedOrders": 192,
-      "averageLeadTime": 3988
+    "10": {
+      "completedOrders": 74,
+      "averageLeadTime": 4212,
+      "delayedOrderRate": 0.96
     },
-    "Seoul-Gangnam": {
-      "completedOrders": 192,
-      "averageLeadTime": 4071
+    "11": {
+      "completedOrders": 81,
+      "averageLeadTime": 4093,
+      "delayedOrderRate": 0.98
     },
-    "Seoul-Mapo": {
-      "completedOrders": 209,
-      "averageLeadTime": 3952
+    "12": {
+      "completedOrders": 80,
+      "averageLeadTime": 3892,
+      "delayedOrderRate": 0.89
     },
-    "Seoul-Yeongdeungpo": {
-      "completedOrders": 204,
-      "averageLeadTime": 4097
+    "13": {
+      "completedOrders": 71,
+      "averageLeadTime": 4042,
+      "delayedOrderRate": 0.87
     },
-    "Seoul-Seodaemun": {
-      "completedOrders": 198,
-      "averageLeadTime": 4144
+    "14": {
+      "completedOrders": 88,
+      "averageLeadTime": 4152,
+      "delayedOrderRate": 0.95
+    },
+    "15": {
+      "completedOrders": 73,
+      "averageLeadTime": 3889,
+      "delayedOrderRate": 0.85
+    },
+    "16": {
+      "completedOrders": 68,
+      "averageLeadTime": 4218,
+      "delayedOrderRate": 0.9
+    },
+    "17": {
+      "completedOrders": 80,
+      "averageLeadTime": 4220,
+      "delayedOrderRate": 0.99
+    },
+    "18": {
+      "completedOrders": 78,
+      "averageLeadTime": 3880,
+      "delayedOrderRate": 0.88
+    },
+    "19": {
+      "completedOrders": 72,
+      "averageLeadTime": 4076,
+      "delayedOrderRate": 0.9
+    },
+    "20": {
+      "completedOrders": 89,
+      "averageLeadTime": 4050,
+      "delayedOrderRate": 0.91
+    },
+    "21": {
+      "completedOrders": 63,
+      "averageLeadTime": 3881,
+      "delayedOrderRate": 0.95
+    },
+    "22": {
+      "completedOrders": 78,
+      "averageLeadTime": 4015,
+      "delayedOrderRate": 0.9
     }
+  },
+  "dataQuality": {
+    "totalOrders": 1000,
+    "completedOrders": 995,
+    "completionRate": 0.99,
+    "missingRate": 0.03,
+    "duplicateTypesRate": 0.02,
+    "outOfOrderRate": 0.06
   }
 }
